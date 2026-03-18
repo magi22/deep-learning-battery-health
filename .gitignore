@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Environnements
+.venv/
+venv/
+env/
+ENV/
+
+# Jupyter / Colab
+.ipynb_checkpoints/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Logs
+*.log
+
+# Données locales lourdes
+*.h5
+*.keras
+*.pb
+*.ckpt
+*.weights.h5
+
+# OS / éditeurs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Fichiers temporaires
+*.tmp
+*.temp
