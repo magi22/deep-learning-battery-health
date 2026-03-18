@@ -61,13 +61,4 @@ Il faut juste :
 3. choisir `app.py` comme fichier principal ;
 4. lancer le déploiement.
 
-## Remarque importante
-
-Le modèle utilise une logique de séparation qui évite au maximum les biais entre entraînement, validation et test.
-L’objectif est d’avoir une évaluation plus crédible, et pas juste des bons chiffres en apparence.
-
-## Résumé rapide
-
-C’est un projet simple à comprendre dans l’idée :
-**on prend les données des cycles de batterie, on les découpe en séquences, puis on entraîne un LSTM pour estimer le SoH.**
 
