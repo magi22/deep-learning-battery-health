@@ -233,11 +233,6 @@ def plot_battery_tracking(y_true, y_pred, bat_test, selected_battery):
 
 
 st.title("Prédiction du SoH des batteries avec un LSTM")
-st.write(
-    "Cette application reprend la logique du notebook : chargement de la base, "
-    "vérification de la structure, création des fenêtres glissantes, entraînement d’un LSTM "
-    "et évaluation finale."
-)
 
 with st.sidebar:
     st.header("Configuration")
