@@ -1,8 +1,8 @@
 # Prédiction du SoH des batteries avec un LSTM
 
-Petit projet de prédiction du **SoH (State of Health)** des batteries à partir de mesures comme la tension, le courant, la température, le SoC et le numéro de cycle.
+Projet de prédiction du **SoH (State of Health)** des batteries à partir de mesures comme la tension, le courant, la température, le SoC et le numéro de cycle.
 
-L’idée ici n’est pas juste d’entraîner un modèle, mais aussi de **mieux comprendre la base**, de **préparer les données proprement**, puis de **voir ce que le LSTM arrive vraiment à apprendre**.
+Il a pour but de prédire le SoH d’une batterie à partir de données séquentielles de décharge, dans une logique simple de régression avec LSTM.
 
 ## Ce que fait l’application
 
@@ -52,9 +52,9 @@ streamlit run app.py
 
 ## Déploiement
 
-Le projet peut être déployé facilement sur **Streamlit Community Cloud**.
+Sur **Streamlit Community Cloud**.
 
-Il faut juste :
+Il faut  :
 
 1. mettre les fichiers sur GitHub ;
 2. connecter le repo à Streamlit Cloud ;
