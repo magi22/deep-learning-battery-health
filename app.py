@@ -38,11 +38,19 @@ html, body, [class*="css"] {
 }
 #MainMenu, footer, header { visibility: hidden; }
 
-/* Fond général */
+/* Fond général — force mode clair même si Streamlit est en dark mode */
+.stApp, .main, section.main > div {
+    background-color: #f8fafc !important;
+}
 .main .block-container {
     padding-top: 1.5rem;
     padding-bottom: 2rem;
     max-width: 1200px;
+    background-color: #f8fafc !important;
+}
+/* Texte par défaut lisible */
+.main p, .main span, .main div, .main label, .main h1, .main h2, .main h3 {
+    color: #0f172a !important;
 }
 
 /* Sidebar */
@@ -159,22 +167,22 @@ plt.rcParams.update({
 # ── FONCTIONS UTILITAIRES ─────────────────────────────────────────────────────
 def section(title, subtitle=""):
     st.markdown(f"""
-    <div style="margin:2rem 0 1rem;padding-bottom:10px;border-bottom:2px solid #f1f5f9;">
+    <div style="margin:2rem 0 1rem;padding-bottom:10px;border-bottom:2px solid #e2e8f0;background:transparent;">
         <span style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:{TEAL};">
             {'● ' + subtitle if subtitle else ''}
         </span>
-        <h3 style="margin:4px 0 0;font-size:18px;font-weight:800;color:{INK};letter-spacing:-.5px;">{title}</h3>
+        <h3 style="margin:4px 0 0;font-size:18px;font-weight:800;color:#0f172a;letter-spacing:-.5px;">{title}</h3>
     </div>
     """, unsafe_allow_html=True)
 
 
 def kpi_card(label, value, color=TEAL, icon=""):
     st.markdown(f"""
-    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px 20px;
+    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:14px;padding:16px 20px;
                 border-top:3px solid {color};box-shadow:0 1px 4px rgba(0,0,0,.04);">
         <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;
-                    color:#94a3b8;margin-bottom:8px;">{icon} {label}</div>
-        <div style="font-size:24px;font-weight:900;color:{INK};letter-spacing:-1px;">{value}</div>
+                    color:#64748b;margin-bottom:8px;">{icon} {label}</div>
+        <div style="font-size:24px;font-weight:900;color:#0f172a;letter-spacing:-1px;">{value}</div>
     </div>
     """, unsafe_allow_html=True)
 
