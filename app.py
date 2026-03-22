@@ -171,12 +171,12 @@ REQUIRED_COLUMNS = [
 ]
 
 
-@st.cache_data
+@st.cache_data(max_entries=1)
 def load_dataset_from_bytes(file_bytes: bytes) -> pd.DataFrame:
     return pd.read_csv(io.BytesIO(file_bytes))
 
 
-@st.cache_data
+@st.cache_data(max_entries=1)
 def load_dataset_from_path(path: str) -> pd.DataFrame:
     return pd.read_csv(path)
 
@@ -185,7 +185,7 @@ def check_columns(df: pd.DataFrame):
     return [c for c in REQUIRED_COLUMNS if c not in df.columns]
 
 
-@st.cache_data
+@st.cache_data(max_entries=1)
 def prepare_cycle_summary(df: pd.DataFrame) -> pd.DataFrame:
     return (
         df.groupby(["battery_id", "cycle_number"])
@@ -204,8 +204,9 @@ def split_batteries(df: pd.DataFrame):
     return train_batteries, val_batteries, test_batteries
 
 
-@st.cache_data
+@st.cache_data(max_entries=1)
 def create_windows(dataframe, feature_cols, target_col, battery_list, window_size):
+    """Une seule fenêtre par cycle (début) pour limiter la mémoire."""
     subset = dataframe[dataframe["battery_id"].isin(battery_list)].copy()
     subset = subset.sort_values(["battery_id","cycle_number","SoC"], ascending=[True,True,False])
     X_list, y_list, battery_ids = [], [], []
@@ -214,10 +215,10 @@ def create_windows(dataframe, feature_cols, target_col, battery_list, window_siz
         soh = float(group[target_col].iloc[0])
         if len(values) < window_size:
             continue
-        for i in range(len(values) - window_size + 1):
-            X_list.append(values[i:i+window_size])
-            y_list.append(soh)
-            battery_ids.append(bat_id)
+        # Une seule fenêtre par cycle au lieu de toutes les fenêtres glissantes
+        X_list.append(values[:window_size])
+        y_list.append(soh)
+        battery_ids.append(bat_id)
     return (np.array(X_list, dtype=np.float32),
             np.array(y_list, dtype=np.float32),
             np.array(battery_ids))
@@ -231,8 +232,8 @@ def transform_X(X, scaler):
 def build_model(window_size, n_features, learning_rate):
     model = keras.Sequential([
         layers.Input(shape=(window_size, n_features)),
-        layers.LSTM(64, return_sequences=True),
-        layers.LSTM(32),
+        layers.LSTM(32, return_sequences=True),
+        layers.LSTM(16),
         layers.Dropout(0.2),
         layers.Dense(1),
     ])
@@ -538,6 +539,9 @@ X_test  = transform_X(X_test_raw,  scaler_X)
 y_train = scaler_y.transform(y_train_raw.reshape(-1,1)).flatten()
 y_val   = scaler_y.transform(y_val_raw.reshape(-1,1)).flatten()
 y_test  = scaler_y.transform(y_test_raw.reshape(-1,1)).flatten()
+y_train_mean = float(y_train_raw.mean())
+# Libérer la mémoire des arrays bruts
+del X_train_raw, X_val_raw, X_test_raw, y_train_raw, y_val_raw
 
 # ── SECTION 5 — ENTRAÎNEMENT ─────────────────────────────────────────────────
 section("Entraînement du modèle LSTM", "Étape 5")
@@ -569,7 +573,7 @@ with st.spinner("Évaluation finale..."):
     mae    = mean_absolute_error(y_true, y_pred)
     rmse   = np.sqrt(mean_squared_error(y_true, y_pred))
     r2     = r2_score(y_true, y_pred)
-    baseline_pred = np.repeat(y_train_raw.mean(), len(y_true))
+    baseline_pred = np.repeat(y_train_mean, len(y_true))
     baseline_mae  = mean_absolute_error(y_true, baseline_pred)
     baseline_rmse = np.sqrt(mean_squared_error(y_true, baseline_pred))
     baseline_r2   = r2_score(y_true, baseline_pred)
