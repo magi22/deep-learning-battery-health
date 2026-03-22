@@ -68,6 +68,20 @@ section[data-testid="stSidebar"] .stButton > button:hover {
 section[data-testid="stSidebar"] hr {
     border-color: #334155 !important;
 }
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] .stSlider label,
+section[data-testid="stSidebar"] .stSelectSlider label,
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] div {
+    color: #e2e8f0 !important;
+}
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzoneInstructions"],
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {
+    color: #cbd5e1 !important;
+    border-color: #334155 !important;
+    background: #1e293b !important;
+}
 
 /* Metrics override */
 [data-testid="metric-container"] {
@@ -356,11 +370,11 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.markdown('<p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:4px;">Données</p>', unsafe_allow_html=True)
+    st.markdown('<p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:4px;">Données</p>', unsafe_allow_html=True)
     uploaded_file = st.file_uploader("Fichier CSV", type=["csv"], label_visibility="collapsed")
 
     st.markdown("---")
-    st.markdown('<p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:4px;">Hyperparamètres</p>', unsafe_allow_html=True)
+    st.markdown('<p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:4px;">Hyperparamètres</p>', unsafe_allow_html=True)
     window_size   = st.slider("Fenêtre glissante", min_value=3,  max_value=15,  value=10)
     epochs        = st.slider("Époques max",       min_value=5,  max_value=60,  value=30)
     batch_size    = st.select_slider("Batch size", options=[16,32,64,128], value=64)
